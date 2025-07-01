@@ -12,20 +12,29 @@ The heap supports the following operations:
 - `meld(otherHeap)`
 - `size()`, `numTrees()`, `totalLinks()`, `totalCuts()`
 
-The internal structure uses a circular doubly linked list and supports lazy consolidation for efficient amortized performance.
+-----
 
-## Example usage
+## ⏱️ Time Complexities (Amortized)
 
-```java
-FibonacciHeap heap = new FibonacciHeap();
-heap.insert(10, "A");
-heap.insert(5, "B");
-heap.insert(7, "C");
+| Operation       | Complexity     |
+|----------------|----------------|
+| insert         | O(1)           |
+| findMin        | O(1)           |
+| deleteMin      | O(log n)       |
+| decreaseKey    | O(1)           |
+| delete         | O(log n)       |
+| meld           | O(1)           |
 
-System.out.println(heap.findMin().key); // 5
+- The heap uses a consolidation process after `deleteMin`, maintaining a logarithmic number of trees.
+- `decreaseKey` triggers cascading cuts when a node becomes smaller than its parent.
+-----
 
-heap.deleteMin();
-System.out.println(heap.findMin().key); // 7
+## 🧠 Design Highlights
+
+- Nodes are managed via a **circular doubly linked root list**.
+- Each node has a `rank`, and children are maintained in a cyclic list as well.
+- The heap supports **marked nodes** to optimize cascading cuts in `decreaseKey`.
+- `meld` joins two heaps in O(1) by linking root lists and updating min pointers.
 
 -----
 
